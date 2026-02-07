@@ -158,6 +158,56 @@ Practical uses:
 
 I recommend starting with read access, then adding write actions once you’re comfortable.
 
+### Bonus: getting a dedicated phone number (Google Voice)
+
+If you want a “public-facing” number for assistants, projects, or side quests, **Google Voice** is a popular option.
+
+High-level steps:
+
+1. Visit **https://voice.google.com** and sign in.
+2. Pick a number (by city/area code).
+3. Verify with an existing eligible phone number (Google will prompt you).
+4. Install the Google Voice app on your phone if you want calls/texts there.
+
+Notes:
+
+- Availability varies by region, and Google may require verification.
+- Treat this like any other comms channel: still use pairing/allowlists on the assistant side.
+
+Official help: https://support.google.com/voice/answer/115061
+
+## Troubleshooting (common beginner hiccups)
+
+A lot of setup issues fall into a few predictable buckets:
+
+### “The gateway is running, but the bot isn’t responding”
+
+- Restart the gateway: `openclaw gateway restart`
+- Check overall health: `openclaw status --deep`
+- Confirm you’re messaging the right account/bot.
+
+### Discord: “It only replies sometimes”
+
+- Make sure you’re **@mentioning** the bot in server channels.
+- Confirm the bot has channel permissions: **View Channel**, **Send Messages**, **Read Message History**.
+- If you restricted responses to specific channels, double-check you copied the correct **channel ID**.
+
+### iMessage: “It reads, but can’t send” or “Not Delivered”
+
+- If the assistant can’t see chats: macOS likely needs **Full Disk Access**.
+- If sends don’t appear at all: macOS **Automation** permissions may be blocking Messages.app control.
+- If the message shows **Not Delivered** inside Messages.app, that’s typically an Apple delivery/routing issue (not OpenClaw). Try starting a fresh thread or confirming iMessage activation.
+
+### Google Calendar OAuth: “This app isn’t verified / only approved testers”
+
+- In Google Cloud’s OAuth consent screen, add your account as a **Test user** (if the app is in Testing).
+- Then re-run the `gog` auth flow.
+
+### Web search: “Search fails/timeouts”
+
+- Make sure your web search provider key is configured.
+- Try a simple search query first, then more complex prompts.
+
 ## What I’d improve next
 
 If you want to tighten everything up further:
