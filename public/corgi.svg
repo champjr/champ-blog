@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Cartoon corgi">
+  <defs>
+    <style>
+      .ln{stroke:#1f1f1f;stroke-width:10;stroke-linecap:round;stroke-linejoin:round}
+    </style>
+  </defs>
+
+  <!-- shadow -->
+  <ellipse cx="256" cy="452" rx="170" ry="26" fill="#000" opacity="0.12"/>
+
+  <!-- body -->
+  <path class="ln" d="M118 335c0-76 64-126 138-126h0c74 0 138 50 138 126v35c0 34-28 62-62 62H180c-34 0-62-28-62-62z" fill="#f2a04a"/>
+  <path class="ln" d="M180 442h152" fill="none"/>
+
+  <!-- legs -->
+  <path class="ln" d="M170 412v42c0 18 14 32 32 32h10c18 0 32-14 32-32v-42" fill="#f2a04a"/>
+  <path class="ln" d="M268 412v42c0 18 14 32 32 32h10c18 0 32-14 32-32v-42" fill="#f2a04a"/>
+
+  <!-- tail -->
+  <path class="ln" d="M404 330c42 10 54 38 34 60-18 20-56 10-72-22" fill="#f2a04a"/>
+
+  <!-- head -->
+  <path class="ln" d="M146 212c0-68 52-118 110-118h0c58 0 110 50 110 118v54c0 56-44 100-100 100h-20c-56 0-100-44-100-100z" fill="#f2a04a"/>
+
+  <!-- ears -->
+  <path class="ln" d="M175 132l-42 36c-18 16-20 42-4 60l18 20" fill="#f2a04a"/>
+  <path class="ln" d="M337 132l42 36c18 16 20 42 4 60l-18 20" fill="#f2a04a"/>
+  <path class="ln" d="M165 156l-22 20" fill="none"/>
+  <path class="ln" d="M347 156l22 20" fill="none"/>
+
+  <!-- face blaze -->
+  <path class="ln" d="M256 112c-26 18-40 46-40 78v22c0 46 16 78 40 92 24-14 40-46 40-92v-22c0-32-14-60-40-78z" fill="#fff"/>
+
+  <!-- muzzle -->
+  <path class="ln" d="M202 256c0 42 24 70 54 70s54-28 54-70c0-20-12-34-26-42-9-5-19-8-28-8s-19 3-28 8c-14 8-26 22-26 42z" fill="#fff"/>
+
+  <!-- eyes -->
+  <circle cx="206" cy="216" r="12" fill="#1f1f1f"/>
+  <circle cx="306" cy="216" r="12" fill="#1f1f1f"/>
+  <circle cx="202" cy="212" r="4" fill="#fff"/>
+  <circle cx="302" cy="212" r="4" fill="#fff"/>
+
+  <!-- eyebrows -->
+  <path class="ln" d="M182 196c10-10 24-14 42-10" fill="none"/>
+  <path class="ln" d="M330 196c-10-10-24-14-42-10" fill="none"/>
+
+  <!-- nose -->
+  <path class="ln" d="M256 256c-10 0-18-8-18-18 0-8 6-14 14-16 2-1 3-1 4-1s2 0 4 1c8 2 14 8 14 16 0 10-8 18-18 18z" fill="#1f1f1f"/>
+
+  <!-- mouth -->
+  <path class="ln" d="M238 276c10 12 26 12 36 0" fill="none"/>
+  <path class="ln" d="M256 276v18" fill="none"/>
+  <path class="ln" d="M244 306c8 10 16 14 24 14s16-4 24-14" fill="none"/>
+
+  <!-- collar tag -->
+  <path class="ln" d="M182 320c18 18 44 28 74 28s56-10 74-28" fill="#ff4d6d"/>
+  <path class="ln" d="M256 356c18 0 32 14 32 32s-14 32-32 32-32-14-32-32 14-32 32-32z" fill="#ffd166"/>
+  <path class="ln" d="M242 390h28" fill="none"/>
+</svg>
