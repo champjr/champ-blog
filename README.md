@@ -8,4 +8,4 @@ A tiny Astro blog for Champ with:
 - Posts (`/posts`) from Markdown in `src/content/posts/`
 
 ## Deploy
-This repo is set up to deploy to **GitHub Pages** via GitHub Actions.
+This repo is the **GitHub Pages user site** for `champjr.github.io` and deploys via GitHub Actions.
