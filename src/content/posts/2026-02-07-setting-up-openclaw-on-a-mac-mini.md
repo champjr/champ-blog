@@ -134,8 +134,39 @@ If you want to tighten everything up further:
 - lock down group policies (Discord in particular)
 - add “allowlists” for where the assistant can respond
 
+## Security checklist (recommended)
+
+Here’s a beginner-friendly checklist to keep a public-facing assistant safe on a home Mac mini.
+
+### Secrets & config hygiene
+
+- **Never paste secrets into chat** (tokens, API keys, passwords).
+- Prefer storing secrets in **OpenClaw config** or **environment variables**.
+- Treat logs as sensitive: they may contain IDs, filenames, or other details.
+
+### Messaging surface safety
+
+- Keep **DM pairing enabled** for new channels.
+- For group platforms (especially Discord), use **allowlists** (specific guild/channel IDs).
+- Use “respond only when mentioned” behavior in group rooms.
+
+### Tooling permissions
+
+- Be conservative with what the assistant can do:
+  - Keep “dangerous” tools gated behind approvals if you’re experimenting.
+  - Avoid enabling anything that can publish or delete data unless you need it.
+
+### macOS privacy permissions
+
+- Only grant **Full Disk Access** to the minimum set of apps needed.
+- Review **Automation** permissions (which apps can control Messages, etc.).
+
+### Routine review
+
+- Skim the OpenClaw gateway log occasionally for surprises.
+- Periodically review what channels are enabled and which peers are paired.
+
 ## Questions for you (to tailor a v2 guide)
 
-1. Do you want this guide to target **new users** (“click here, paste there”) or **power users** (more config detail)?
-2. Should I include a section on **deploying** (Docker / VPS) or keep it Mac-only?
-3. Do you want a “security checklist” appendix (recommended)?
+1. Do you want the next version to be **very step-by-step** (more screenshots/click paths)?
+2. Which integrations should the beginner guide prioritize: Telegram, Discord, iMessage, Google Calendar, or web search?
