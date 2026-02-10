@@ -17,7 +17,7 @@ const posts = allPosts
   ) : (
     <div style="display:flex; flex-direction: column; gap: 14px; margin-top: 14px;">
       {posts.map((post) => (
-        <article class="card">
+        <article class="card clickable">
           <a href={`/posts/${post.slug}/`} style="text-decoration:none; color: inherit;">
             <h2 style="margin: 0; font-size: 1.35rem;">{post.data.title}</h2>
           </a>
