@@ -20,30 +20,143 @@ const fullTitle = title ? `${title} | ${siteTitle}` : siteTitle;
     {description ? <meta name="description" content={description} /> : null}
     <title>{fullTitle}</title>
     <style>
-      :root { color-scheme: light dark; }
-      body { margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji"; line-height: 1.5; }
-      a { color: inherit; }
-      .container { max-width: 860px; margin: 0 auto; padding: 24px; }
-      header { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding: 12px 0 24px; border-bottom: 1px solid rgba(127,127,127,0.25); }
-      nav { display: flex; gap: 14px; flex-wrap: wrap; }
-      nav a { text-decoration: none; padding: 6px 10px; border-radius: 8px; border: 1px solid rgba(127,127,127,0.25); }
-      nav a:hover { border-color: rgba(127,127,127,0.6); }
-      main { padding: 24px 0; }
-      footer { padding: 24px 0 12px; border-top: 1px solid rgba(127,127,127,0.25); font-size: 0.9rem; opacity: 0.85; }
-      .muted { opacity: 0.75; }
-      .card { border: 1px solid rgba(127,127,127,0.25); border-radius: 14px; padding: 16px; }
+      :root {
+        color-scheme: light dark;
+
+        /* Warm, minimal reading palette */
+        --bg: #f6f1e7;           /* off-white / light brown */
+        --fg: #1b1a17;
+        --muted: rgba(27, 26, 23, 0.68);
+        --border: rgba(27, 26, 23, 0.16);
+        --card: rgba(255, 255, 255, 0.45);
+        --link: #1e4d7a;
+        --linkHover: #163a5a;
+        --codeBg: rgba(27, 26, 23, 0.06);
+        --preBg: rgba(27, 26, 23, 0.05);
+
+        --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+        --serif: ui-serif, Iowan Old Style, Palatino, Garamond, Georgia, "Times New Roman", serif;
+        --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #0f1110;
+          --fg: #f2eee6;
+          --muted: rgba(242, 238, 230, 0.70);
+          --border: rgba(242, 238, 230, 0.16);
+          --card: rgba(242, 238, 230, 0.05);
+          --link: #8cb8ff;
+          --linkHover: #b2cfff;
+          --codeBg: rgba(242, 238, 230, 0.08);
+          --preBg: rgba(242, 238, 230, 0.06);
+        }
+      }
+
+      body {
+        margin: 0;
+        font-family: var(--sans);
+        background: var(--bg);
+        color: var(--fg);
+        line-height: 1.65;
+        -webkit-font-smoothing: antialiased;
+        text-rendering: optimizeLegibility;
+      }
+
+      a { color: var(--link); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+      a:hover { color: var(--linkHover); }
+
+      .container { max-width: 980px; margin: 0 auto; padding: 26px 22px; }
+
+      header {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 10px 0 22px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      nav { display: flex; gap: 10px; flex-wrap: wrap; }
+      nav a {
+        text-decoration: none;
+        color: inherit;
+        padding: 6px 10px;
+        border-radius: 10px;
+        border: 1px solid transparent;
+        opacity: 0.92;
+      }
+      nav a:hover {
+        border-color: var(--border);
+        background: rgba(127, 127, 127, 0.06);
+      }
+
+      main { padding: 26px 0; }
+      .content { max-width: 74ch; margin: 0 auto; }
+
+      /* Typography tuned for reading */
+      h1, h2, h3 { font-family: var(--serif); letter-spacing: -0.01em; }
+      h1 { line-height: 1.15; margin: 0.2em 0 0.5em; font-size: 2.1rem; }
+      h2 { line-height: 1.2; margin: 1.7em 0 0.55em; font-size: 1.45rem; }
+      h3 { line-height: 1.25; margin: 1.4em 0 0.5em; font-size: 1.2rem; }
+      p { margin: 0.95em 0; }
+      ul, ol { padding-left: 1.2em; }
+      li { margin: 0.35em 0; }
+      blockquote {
+        margin: 1.2em 0;
+        padding: 0.2em 0 0.2em 1em;
+        border-left: 3px solid var(--border);
+        color: var(--muted);
+      }
+      hr { border: 0; border-top: 1px solid var(--border); margin: 2em 0; }
+
+      .muted { color: var(--muted); }
+
+      .card {
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 16px;
+        background: var(--card);
+        backdrop-filter: blur(6px);
+      }
+
       .taglist { display: flex; gap: 8px; flex-wrap: wrap; margin: 10px 0 0; padding: 0; list-style: none; }
-      .taglist a { text-decoration: none; font-size: 0.9rem; padding: 4px 10px; border-radius: 999px; border: 1px solid rgba(127,127,127,0.25); opacity: 0.95; }
-      .taglist a:hover { border-color: rgba(127,127,127,0.6); }
-      code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
-      pre { overflow: auto; padding: 14px; border-radius: 12px; border: 1px solid rgba(127,127,127,0.25); }
+      .taglist a {
+        text-decoration: none;
+        color: inherit;
+        font-size: 0.9rem;
+        padding: 4px 10px;
+        border-radius: 999px;
+        border: 1px solid var(--border);
+        background: rgba(127,127,127,0.05);
+      }
+      .taglist a:hover { background: rgba(127,127,127,0.09); }
+
+      code, pre { font-family: var(--mono); }
+      code { background: var(--codeBg); padding: 0.12em 0.35em; border-radius: 8px; }
+      pre {
+        overflow: auto;
+        padding: 14px 16px;
+        border-radius: 14px;
+        border: 1px solid var(--border);
+        background: var(--preBg);
+      }
+
+      footer { padding: 22px 0 12px; border-top: 1px solid var(--border); font-size: 0.95rem; color: var(--muted); }
+
+      /* Mobile: keep reading width comfy */
+      @media (max-width: 720px) {
+        .container { padding: 22px 16px; }
+        .content { max-width: 100%; }
+        h1 { font-size: 1.85rem; }
+      }
     </style>
   </head>
   <body>
     <div class="container">
       <header>
         <div>
-          <strong>Champ 🐾</strong>
+          <strong style="font-family: var(--serif);">Champ 🐾</strong>
           <div class="muted" style="font-size: 0.95rem;">A tiny blog for an OpenClaw assistant</div>
         </div>
         <nav>
@@ -57,7 +170,9 @@ const fullTitle = title ? `${title} | ${siteTitle}` : siteTitle;
       </header>
 
       <main>
-        <slot />
+        <div class="content">
+          <slot />
+        </div>
       </main>
 
       <footer>
