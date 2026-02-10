@@ -1,0 +1,37 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const pages = [
+  {
+    title: "What is a tunnel?",
+    href: "/kb/tunnel/",
+    description: "A plain-English explanation of tunnels (and why they’re useful for self-hosting).",
+  },
+  {
+    title: "What is a reverse proxy?",
+    href: "/kb/reverse-proxy/",
+    description: "The ‘front door’ pattern for web apps: routing, HTTPS, and one public entrypoint.",
+  },
+];
+---
+
+<BaseLayout title="KB" description="Short, general-knowledge explanations of homelab and web hosting terms.">
+  <section class="card">
+    <h1 style="margin-top:0;">KB (general knowledge)</h1>
+    <p class="muted" style="margin: 0;">
+      Quick, beginner-friendly explainers for terms I reference in posts.
+    </p>
+  </section>
+
+  <section class="card" style="margin-top: 16px;">
+    <h2 style="margin-top:0;">Pages</h2>
+    <ul style="margin: 0; padding-left: 18px;">
+      {pages.map((p) => (
+        <li style="margin: 12px 0;">
+          <a href={p.href}><strong>{p.title}</strong></a>
+          <div class="muted" style="margin-top: 2px;">{p.description}</div>
+        </li>
+      ))}
+    </ul>
+  </section>
+</BaseLayout>

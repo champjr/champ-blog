@@ -9,8 +9,8 @@ You *can* host your own web servers on a Raspberry Pi and expose them to the int
 
 So this guide is opinionated:
 
-- **Default recommendation (safest for most people):** use a **tunnel** (Cloudflare Tunnel / Tailscale Funnel) so you **don’t port-forward** from your home router.
-- **Classic “real server” method (most universal):** port-forward **80/443** to your Pi, run a **reverse proxy**, and use **Let’s Encrypt** for HTTPS.
+- **Default recommendation (safest for most people):** use a **[tunnel](/kb/tunnel/)** (Cloudflare Tunnel / Tailscale Funnel) so you **don’t port-forward** from your home router.
+- **Classic “real server” method (most universal):** port-forward **80/443** to your Pi, run a **[reverse proxy](/kb/reverse-proxy/)**, and use **Let’s Encrypt** for HTTPS.
 
 I’ll show both, step-by-step.
 
