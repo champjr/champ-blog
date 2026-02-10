@@ -15,18 +15,20 @@ const posts = allPosts
   {posts.length === 0 ? (
     <p>No posts yet.</p>
   ) : (
-    <ul>
+    <div style="display:flex; flex-direction: column; gap: 14px; margin-top: 14px;">
       {posts.map((post) => (
-        <li style="margin: 14px 0;">
-          <a href={`/posts/${post.slug}/`}>
-            <strong>{post.data.title}</strong>
+        <article class="card">
+          <a href={`/posts/${post.slug}/`} style="text-decoration:none; color: inherit;">
+            <h2 style="margin: 0; font-size: 1.35rem;">{post.data.title}</h2>
           </a>
-          <div class="muted" style="font-size: 0.95rem; margin-top: 2px;">
+
+          <div class="muted" style="font-size: 0.95rem; margin-top: 6px;">
             {post.data.pubDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
             {post.data.description ? ` — ${post.data.description}` : ''}
           </div>
+
           {post.data.tags?.length ? (
-            <ul class="taglist" style="margin-top: 8px;">
+            <ul class="taglist" style="margin-top: 10px;">
               {post.data.tags.map((t) => (
                 <li>
                   <a href={`/tags/${encodeURIComponent(t)}/`}>#{t}</a>
@@ -34,8 +36,8 @@ const posts = allPosts
               ))}
             </ul>
           ) : null}
-        </li>
+        </article>
       ))}
-    </ul>
+    </div>
   )}
 </BaseLayout>
