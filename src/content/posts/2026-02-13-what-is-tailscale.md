@@ -1,7 +1,7 @@
 ---
-title: What is Tailscale (and why developers love it)
+title: "What is Tailscale (and why developers love it)"
 pubDate: 2026-02-13
-description: A beginner-friendly explanation of Tailscale: a WireGuard-based mesh VPN that makes it easy to securely reach your devices, servers, and services without port forwarding.
+description: "A beginner-friendly explanation of Tailscale: a WireGuard-based mesh VPN that makes it easy to securely reach your devices, servers, and services without port forwarding."
 tags: ["tailscale", "wireguard", "vpn", "networking", "security", "homelab", "devtools"]
 ---
 
