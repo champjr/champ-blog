@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Strudel Beat Demo</title>
+    <style>
+      :root { color-scheme: light dark; }
+      body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 16px; }
+      .row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+      button { padding: 8px 12px; font-size: 14px; }
+      code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; }
+      pre { padding: 10px; border: 1px solid rgba(127,127,127,.35); border-radius: 8px; overflow: auto; }
+      .muted { opacity: 0.8; font-size: 13px; }
+      .error { color: #b00020; white-space: pre-wrap; }
+    </style>
+  </head>
+  <body>
+    <div class="row">
+      <button id="start">Play</button>
+      <button id="stop" disabled>Stop</button>
+      <span class="muted">(audio requires a click/tap)</span>
+    </div>
+
+    <p class="muted">This is a minimal Strudel-in-the-browser demo embedded in the blog. It pulls Strudel from an ESM CDN.</p>
+
+    <pre><code id="pattern">$ : s("bd*4")
+$ : s("hh*8")
+$ : s("sd*2").delay(0.5)
+</code></pre>
+
+    <div id="status" class="muted"></div>
+    <div id="err" class="error"></div>
+
+    <script type="module">
+      import * as Core from "https://esm.sh/@strudel/core@1.2.5";
+      import { initAudioOnFirstClick, getAudioContext, webaudioOutput } from "https://esm.sh/@strudel/webaudio@1.1.0";
+
+      const $ = (id) => document.getElementById(id);
+      const startBtn = $("start");
+      const stopBtn = $("stop");
+      const statusEl = $("status");
+      const errEl = $("err");
+
+      function setStatus(msg) { statusEl.textContent = msg; }
+      function setError(msg) { errEl.textContent = msg || ""; }
+
+      // Browser audio policy: must be initialized from a gesture.
+      initAudioOnFirstClick();
+      const ctx = getAudioContext();
+
+      if (!Core.repl) {
+        setError("Strudel core loaded, but Core.repl() was not found. The CDN bundle may have changed.");
+      }
+
+      const { scheduler } = Core.repl({
+        defaultOutput: webaudioOutput,
+        getTime: () => ctx.currentTime,
+      });
+
+      // Build a simple beat. Prefer the classic drum sample names if available.
+      function makePattern() {
+        // Most Strudel examples use `s(...)` to set the sound/sample name.
+        if (typeof Core.s === "function" && typeof Core.stack === "function") {
+          const bd = Core.s("bd").fast(4);
+          const hh = Core.s("hh").fast(8).gain(0.7);
+          const sd = Core.s("sd").fast(2).delay(0.5).gain(0.9);
+          return Core.stack(bd, hh, sd);
+        }
+
+        // Fallback: a percussive synth click track.
+        if (typeof Core.note === "function") {
+          return Core.note("c5").s("square").release(0.02).fast(8);
+        }
+
+        throw new Error("Could not find expected Strudel functions (s/stack or note)." );
+      }
+
+      let pattern;
+      try {
+        pattern = makePattern();
+        scheduler.setPattern(pattern);
+        setStatus("Ready.");
+      } catch (e) {
+        setError(String(e?.stack || e));
+      }
+
+      startBtn.addEventListener("click", async () => {
+        setError("");
+        try {
+          // Ensure context is running.
+          if (ctx.state !== "running") await ctx.resume();
+          scheduler.start();
+          startBtn.disabled = true;
+          stopBtn.disabled = false;
+          setStatus("Playing.");
+        } catch (e) {
+          setError(String(e?.stack || e));
+        }
+      });
+
+      stopBtn.addEventListener("click", () => {
+        scheduler.stop();
+        startBtn.disabled = false;
+        stopBtn.disabled = true;
+        setStatus("Stopped.");
+      });
+    </script>
+  </body>
+</html>
