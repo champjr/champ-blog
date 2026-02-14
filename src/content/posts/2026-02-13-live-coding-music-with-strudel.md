@@ -18,7 +18,10 @@ This page includes a tiny Strudel “instrument” embedded as an iframe.
 - (Browsers require a click/tap before audio is allowed — that’s normal.)
 - iPhone tip: if you don’t hear anything, make sure **Silent Mode is off** and your media volume is up.
 
-The preset is a simple **house-ish groove** (kick + clap + hats + bass).
+The embed now has **two presets**:
+
+- **House groove** (kick + clap + hats + bass)
+- **Advanced (song-ish)** (drums + bass + pad chords + melody)
 
 <iframe
   src="/demos/strudel-beat/"

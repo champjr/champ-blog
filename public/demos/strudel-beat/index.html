@@ -9,6 +9,7 @@
       body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 16px; }
       .row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
       button { padding: 8px 12px; font-size: 14px; }
+      select { padding: 8px 10px; font-size: 14px; }
       code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; }
       pre { padding: 10px; border: 1px solid rgba(127,127,127,.35); border-radius: 8px; overflow: auto; }
       .muted { opacity: 0.8; font-size: 13px; }
@@ -19,10 +20,15 @@
     <div class="row">
       <button id="start">Play</button>
       <button id="stop" disabled>Stop</button>
+      <label class="muted" for="preset">Preset:</label>
+      <select id="preset">
+        <option value="house" selected>House groove</option>
+        <option value="advanced">Advanced (song-ish)</option>
+      </select>
       <span class="muted">(audio requires a click/tap)</span>
     </div>
 
-    <p class="muted">This is a minimal Strudel-in-the-browser demo embedded in the blog. It pulls Strudel from an ESM CDN.</p>
+    <p class="muted">This is a minimal Strudel-in-the-browser demo embedded in the blog. It pulls Strudel from an ESM CDN. (iPhone: if you hear nothing, make sure Silent Mode is off.)</p>
 
     <pre><code id="pattern">// House-ish loop (synth-only so it works everywhere)
 // Kick: 4-on-the-floor
@@ -41,6 +47,7 @@
       const $ = (id) => document.getElementById(id);
       const startBtn = $("start");
       const stopBtn = $("stop");
+      const presetSel = $("preset");
       const statusEl = $("status");
       const errEl = $("err");
 
@@ -67,16 +74,17 @@
         getTime: () => ctx.currentTime,
       });
 
-      // Build a simple beat.
+      // Build patterns.
       // iOS Safari/Chrome-in-iOS can be picky about sample packs / fetch timing,
       // so this demo uses only built-in synth waveforms (no external samples).
-      function makePattern() {
+      function requireCore() {
         if (typeof Core.note !== "function" || typeof Core.stack !== "function") {
           throw new Error("Could not find expected Strudel functions (note/stack)." );
         }
+      }
 
-        // A simple house-ish groove using built-in synth waveforms.
-        // (No external samples: more reliable for phones + embeds.)
+      function makeHousePattern() {
+        requireCore();
 
         // Kick: 4-on-the-floor
         const kick = Core.note("c2")
@@ -86,7 +94,7 @@
           .lpf(160)
           .fast(4);
 
-        // Clap: 2 & 4 (delayed by half a beat), slightly brighter
+        // Clap: 2 & 4
         const clap = Core.note("c4")
           .s("square")
           .release(0.03)
@@ -104,7 +112,7 @@
           .fast(16)
           .gain("<0.6 0.9 0.6 0.7>");
 
-        // Open hat: offbeats (every 8th, delayed), longer decay
+        // Open hat: offbeats
         const oh = Core.note("c6")
           .s("sawtooth")
           .release(0.08)
@@ -113,7 +121,7 @@
           .fast(8)
           .delay(0.5);
 
-        // Bass: simple minor riff (repeat and filter down)
+        // Bass: simple minor riff
         const bass = Core.note("<c2 c2 eb2 g1>")
           .s("sawtooth")
           .release(0.12)
@@ -124,14 +132,94 @@
         return Core.stack(kick, clap, ch, oh, bass);
       }
 
-      let pattern;
-      try {
-        pattern = makePattern();
-        scheduler.setPattern(pattern);
-        setStatus("Ready.");
-      } catch (e) {
-        setError(String(e?.stack || e));
+      function makeAdvancedPattern() {
+        requireCore();
+
+        // Drums (same house base, with a little movement)
+        const kick = Core.note("c2")
+          .s("sine")
+          .release(0.09)
+          .gain(0.95)
+          .lpf(150)
+          .fast(4);
+
+        const clap = Core.note("c4")
+          .s("square")
+          .release(0.03)
+          .gain("<0.10 0.14 0.12 0.14>")
+          .bpf(2000)
+          .fast(2)
+          .delay(0.5);
+
+        const hats = Core.note("c6")
+          .s("square")
+          .release(0.012)
+          .gain("<0.03 0.05 0.04 0.06>")
+          .hpf(5000)
+          .fast(16);
+
+        const openHat = Core.note("c6")
+          .s("sawtooth")
+          .release(0.09)
+          .gain(0.025)
+          .hpf(3500)
+          .fast(8)
+          .delay(0.5);
+
+        // Chords/pad (slow changes)
+        const pad = Core.note("<c4 eb4 g4 bb4>")
+          .s("sawtooth")
+          .release(0.6)
+          .gain(0.06)
+          .lpf("<600 900 700 1000>")
+          .fast(1);
+
+        // Melody (simple arp-ish line)
+        const melody = Core.note("<g4 bb4 c5 eb5 g5 eb5 c5 bb4>")
+          .s("triangle")
+          .release(0.12)
+          .gain(0.08)
+          .lpf(1200)
+          .fast(8);
+
+        // Bass (walk a little)
+        const bass = Core.note("<c2 c2 eb2 g1 bb1 g1 eb2 c2>")
+          .s("sawtooth")
+          .release(0.14)
+          .gain(0.16)
+          .lpf(220)
+          .fast(4);
+
+        return Core.stack(kick, clap, hats, openHat, bass, pad, melody);
       }
+
+      const PRESET = {
+        house: {
+          name: "House groove",
+          code: `// House groove (synth-only)\n// Kick: 4-on-the-floor\n// Clap: 2 & 4\n// Hats: 16ths + offbeat open hat\n// Bass: minor riff`,
+          make: makeHousePattern,
+        },
+        advanced: {
+          name: "Advanced (song-ish)",
+          code: `// Advanced example (still synth-only)\n// Drums + bass + pad chord + melody\n// Tip: turn volume down before hitting Play 🙂`,
+          make: makeAdvancedPattern,
+        },
+      };
+
+      function applyPreset(key) {
+        setError("");
+        const preset = PRESET[key] || PRESET.house;
+        document.getElementById("pattern").textContent = preset.code;
+        try {
+          scheduler.setPattern(preset.make());
+          setStatus(`Ready: ${preset.name}.`);
+        } catch (e) {
+          setError(String(e?.stack || e));
+        }
+      }
+
+      applyPreset(presetSel.value);
+      presetSel.addEventListener("change", () => applyPreset(presetSel.value));
 
       startBtn.addEventListener("click", async () => {
         setError("");
@@ -141,6 +229,7 @@
           scheduler.start();
           startBtn.disabled = true;
           stopBtn.disabled = false;
+          presetSel.disabled = true;
           setStatus("Playing.");
         } catch (e) {
           setError(String(e?.stack || e));
@@ -151,6 +240,7 @@
         scheduler.stop();
         startBtn.disabled = false;
         stopBtn.disabled = true;
+        presetSel.disabled = false;
         setStatus("Stopped.");
       });
     </script>
