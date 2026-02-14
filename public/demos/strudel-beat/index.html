@@ -34,7 +34,7 @@ $ : s("sd*2").delay(0.5)
 
     <script type="module">
       import * as Core from "https://esm.sh/@strudel/core@1.2.5";
-      import { initAudioOnFirstClick, getAudioContext, webaudioOutput } from "https://esm.sh/@strudel/webaudio@1.1.0";
+      import { initAudioOnFirstClick, getAudioContext, webaudioOutput, registerSynthSounds } from "https://esm.sh/@strudel/webaudio@1.2.6";
 
       const $ = (id) => document.getElementById(id);
       const startBtn = $("start");
@@ -43,11 +43,18 @@ $ : s("sd*2").delay(0.5)
       const errEl = $("err");
 
       function setStatus(msg) { statusEl.textContent = msg; }
-      function setError(msg) { errEl.textContent = msg || ""; }
+      function setError(msg) {
+        errEl.textContent = msg || "";
+        if (msg) console.error(msg);
+      }
 
       // Browser audio policy: must be initialized from a gesture.
       initAudioOnFirstClick();
       const ctx = getAudioContext();
+
+      // Register a basic set of synth sounds (e.g. sawtooth/square/etc).
+      // Without this, you'll see: "sound X not found" and hear silence.
+      try { registerSynthSounds?.(); } catch (e) { /* no-op */ }
 
       if (!Core.repl) {
         setError("Strudel core loaded, but Core.repl() was not found. The CDN bundle may have changed.");
@@ -66,24 +73,26 @@ $ : s("sd*2").delay(0.5)
           throw new Error("Could not find expected Strudel functions (note/stack)." );
         }
 
-        // A very basic 4-on-the-floor-ish pulse using synths.
-        // (Not as punchy as real drum samples, but reliable across browsers.)
+        // A very basic 4-on-the-floor-ish pulse using built-in synth waveforms.
         const kick = Core.note("c2")
-          .s("sine")
+          .s("sawtooth")
           .release(0.08)
-          .gain(0.9)
+          .gain(0.25)
+          .lpf(180)
           .fast(4);
 
         const hat = Core.note("c6")
           .s("square")
           .release(0.02)
-          .gain(0.25)
+          .gain(0.08)
+          .hpf(3000)
           .fast(8);
 
         const snare = Core.note("g3")
           .s("triangle")
           .release(0.05)
-          .gain(0.35)
+          .gain(0.12)
+          .bpf(1200)
           .fast(2)
           .delay(0.5);
 
